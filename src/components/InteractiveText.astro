@@ -1,0 +1,53 @@
+---
+// No props needed for this component
+---
+<div id="interactive-text-container" class="clash-display text-7xl md:text-9xl font-bold relative">
+    <span class="line-mask"><span class="line">We build</span></span>
+    <span class="line-mask"><span class="line">We create</span></span>
+    <span class="line-mask"><span class="line">We architect</span></span>
+</div>
+
+<style>
+.line-mask {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+.line-mask:nth-child(1) { --delay: 0.2s; }
+.line-mask:nth-child(2) { --delay: 0.4s; }
+.line-mask:nth-child(3) { --delay: 0.6s; }
+
+.line {
+    display: block;
+    transform: translateY(110%);
+    animation: reveal 2.5s cubic-bezier(0.22, 1, 0.36, 1) var(--delay) forwards;
+}
+
+@keyframes reveal {
+    to {
+        transform: translateY(0);
+    }
+}
+</style>
+
+<script is:inline>
+    // This script will only run if the component is on the page.
+    document.addEventListener('astro:page-load', () => {
+        const container = document.getElementById('interactive-text-container');
+        // Only run the animation if the specific container exists
+        if (container) {
+            const lines = container.querySelectorAll('.line-mask .line');
+            if (lines.length > 0) {
+                gsap.set(lines, { y: '110%' });
+
+                gsap.to(lines, {
+                    y: '0%',
+                    duration: 1.5,
+                    stagger: 0.2,
+                    ease: 'power4.out',
+                    delay: 0.5
+                });
+            }
+        }
+    });
+</script>

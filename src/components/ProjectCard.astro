@@ -1,0 +1,29 @@
+---
+const { project } = Astro.props;
+
+const { slug, imgSrc, title, description, tags } = project;
+---
+
+<a 
+    href={`/projects/${slug}`}
+    class="group block bg-white/5 rounded-lg overflow-hidden border border-white/10 transition-all duration-300 hover:border-brand-primary/80 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1"
+>
+    <div class="overflow-hidden">
+        <img 
+            src={imgSrc} 
+            alt={`Screenshot of the ${title} project`} 
+            class="w-full h-56 object-cover transform transition-transform duration-500 group-hover:scale-105" 
+            width="400" 
+            height="224"
+        />
+    </div>
+    <div class="p-6">
+        <h3 class="text-xl font-semibold text-white mb-2 clash-display">{title}</h3>
+        <p class="text-white/70 mb-4 text-sm leading-relaxed min-h-[40px]">{description}</p> 
+        <div class="flex flex-wrap gap-2 mt-4">
+            {tags && tags.map(tag => (
+                <span class="bg-white/10 text-white/80 text-xs font-medium px-3 py-1 rounded-full">{tag}</span>
+            ))}
+        </div>
+    </div>
+</a>

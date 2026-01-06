@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const techStack = ["SaaS", "React", "Node.js", "Stripe"];
+
+const keyFeatures = [
+  "Patient-Friendly Invoices",
+  "Online Payments via Stripe",
+  "Automated Reminders",
+];
+---
+
+<BaseLayout title="Case Study: SaaS for Dental Clinics" pageDescription="A streamlined billing and invoicing solution designed specifically for dental practices in Winnipeg.">
+  <style>
+    body {
+      background-color: #050505;
+    }
+  </style>
+
+  <main class="py-24 px-4 text-off-white">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="text-5xl md:text-7xl font-bold clash-display" style="color: #e1fe3f;">SaaS for Dental Clinics</h1>
+        <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl mx-auto">A streamlined billing and invoicing solution designed specifically for dental practices in Winnipeg.</p>
+      </div>
+
+      <!-- Main Image -->
+      <div class="mb-16">
+        <img src="/dental-full.webp" alt="Dental Billing SaaS Platform" class="w-full rounded-2xl shadow-2xl shadow-electric-yellow/10 border border-white/10">
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="flex justify-center gap-3 mb-16 flex-wrap">
+        {techStack.map(tag => (
+          <span class="bg-white/10 text-off-white/80 text-sm font-semibold px-4 py-2 rounded-full">{tag}</span>
+        ))}
+      </div>
+
+      <!-- Main Content -->
+      <div class="prose prose-invert prose-lg max-w-none mx-auto text-gray-300">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+          <div>
+            <h2 class="text-3xl font-bold clash-display text-off-white">The Problem</h2>
+            <p>Dental clinics in Winnipeg are often stuck using generic, outdated accounting software or cumbersome spreadsheets to manage their patient billing. This leads to wasted administrative hours, a higher chance of errors, and a disconnected, unprofessional experience for patients.</p>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold clash-display text-off-white">The Solution</h2>
+            <p>We developed <strong style="color: #e1fe3f">Dental-Bill</strong>, a clean, simple, and powerful SaaS platform designed by talking to actual dental office administrators. It focuses on doing one thing perfectly: making dental invoicing and payment collection effortless.</p>
+            <ul class="mt-6 space-y-4">
+              {keyFeatures.map(feature => (
+                <li class="flex items-start">
+                  <svg class="w-6 h-6 text-green-400 mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-24">
+        <a href="/#contact" class="group relative px-10 py-5 border border-electric-yellow rounded-full overflow-hidden inline-block transition-all text-electric-yellow btn-glow font-bold text-lg">
+          <span class="relative z-10 group-hover:text-brand-dark transition-colors duration-300">Discuss This Solution</span>
+          <div class="absolute inset-0 bg-electric-yellow translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+        </a>
+      </div>
+
+    </div>
+  </main>
+</BaseLayout>

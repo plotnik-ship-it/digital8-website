@@ -1,16 +1,74 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import InsightCard from '../components/InsightCard.astro';
+import ContactForm from '../components/ContactForm.jsx';
+import { services, caseStudies, insights } from '../content.js';
 ---
+<BaseLayout title="Digital8 - Premium Web & App Development">
+	
+	<!-- Hero Section -->
+	<section class="text-center min-h-[50vh] flex flex-col items-center justify-center -mt-8">
+		<h1 class="hero-text text-5xl md:text-7xl lg:text-8xl clash-display font-semibold max-w-4xl leading-tight">
+			Elite Engineering &<br/> <span class="text-brand-primary">Stunning Design</span>
+		</h1>
+		<p class="hero-subtext text-lg md:text-xl text-white/80 max-w-2xl mt-6">
+			We are a digital agency that partners with ambitious brands to build high-performance websites and applications.
+		</p>
+	</section>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+	<!-- Work/Services Section -->
+    <section id="work" class="content-card">
+        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Our Craft</h2>
+        <p class="text-lg text-white/70 max-w-3xl mb-12">
+            We specialize in a holistic approach to digital product creation, ensuring every detail is polished to perfection, from the first line of code to the final user interaction.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {services.map(service => <ServiceCard title={service.title} description={service.description} icon={service.icon} />)}
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="content-card mt-24 md:mt-32">
+        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Featured Work</h2>
+        <p class="text-lg text-white/70 max-w-3xl mb-12">
+            We've helped industry leaders and innovative startups alike to realize their digital ambitions. Here’s a glimpse of our impact.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+            {caseStudies.map(project => <ProjectCard project={project} />)}
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="content-card mt-24 md:mt-32">
+        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">The Digital8 Difference</h2>
+        <p class="text-lg text-white/70 max-w-3xl">
+            Founded on the principle of 'less is more', we focus on server-first technologies like Astro to deliver unmatched performance. Our small, senior-led teams embed with our clients to become true partners, turning ambitious ideas into digital reality.
+        </p>
+         <div class="mt-8">
+            <a href="#contact" class="text-brand-primary font-semibold text-lg hover:underline">Let's build together →</a>
+        </div>
+    </section>
+
+    <!-- Insights Section -->
+    <section class="content-card mt-24 md:mt-32">
+        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Our Insights</h2>
+        <p class="text-lg text-white/70 max-w-3xl mb-12">
+            We believe in building in public and sharing our knowledge. Explore our latest articles on technology, design, and digital strategy.
+        </p>
+        <div class="flex flex-col gap-6">
+            {insights.map(insight => <InsightCard {...insight} />)}
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="content-card mt-24 md:mt-32">
+        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Have a project in mind?</h2>
+        <p class="text-lg text-white/70 max-w-3xl mb-12">
+            We're ready to listen. Fill out the form below, and we'll get back to you within 24 hours to schedule an introductory call.
+        </p>
+        <ContactForm client:visible />
+    </section>
+
+</BaseLayout>

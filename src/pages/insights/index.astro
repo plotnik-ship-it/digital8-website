@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import InsightCard from '../../components/InsightCard.astro';
+import { insights } from '../../content.js';
+---
+
+<BaseLayout title="Insights">
+  <div class="max-w-7xl mx-auto py-12">
+    <header class="text-center mb-16">
+        <h1 class="text-6xl md:text-8xl font-bold clash-display text-off-white">Insights</h1>
+        <p class="text-xl text-gray-400 mt-4 max-w-2xl mx-auto">Our thinking on performance, architecture, and user experience for premium digital properties.</p>
+    </header>
+
+    <div class="space-y-8">
+        {insights.map(insight => (
+          <InsightCard {...insight} url={`/insights/${insight.slug}`} />
+        ))}
+    </div>
+
+  </div>
+</BaseLayout>

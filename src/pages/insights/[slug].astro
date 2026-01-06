@@ -1,0 +1,111 @@
+---
+import { marked } from 'marked';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { insights } from '../../content.js';
+
+export async function getStaticPaths() {
+  return insights.map(insight => ({
+    params: { slug: insight.slug },
+    props: { insight },
+  }));
+}
+
+const { insight } = Astro.props;
+
+let htmlContent = '';
+let parseError = null;
+
+if (insight && insight.content) {
+    try {
+        htmlContent = marked.parse(insight.content);
+    } catch (e) {
+        parseError = e.message;
+    }
+} else if (insight && !insight.content) {
+    htmlContent = "<p>Content is missing for this insight.</p>";
+}
+
+---
+
+<BaseLayout title={insight ? insight.title : "Error"} pageDescription={insight ? insight.description : "An error occurred."}>
+  <style is:global>
+    body {
+      background-color: #050505;
+    }
+    .prose-custom h2 {
+      font-family: 'Clash Display', sans-serif;
+      color: #e1fe3f;
+      font-size: 2.25rem;
+      margin-top: 2em;
+      margin-bottom: 1em;
+    }
+    .prose-custom h3 {
+        font-family: 'Clash Display', sans-serif;
+        color: #e1fe3f;
+        font-size: 1.75rem;
+        margin-top: 1.5em;
+        margin-bottom: 0.75em;
+    }
+    .prose-custom p {
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: #BDBDBD;
+    }
+    .prose-custom strong {
+      color: #FFFFFF;
+    }
+    .prose-custom a {
+        color: #e1fe3f;
+        text-decoration: underline;
+    }
+    .prose-custom ul {
+        list-style-position: inside;
+        margin-left: 1.25rem;
+    }
+    .prose-custom li {
+        margin-bottom: 0.5rem;
+    }
+    .prose-custom li::marker {
+        color: #e1fe3f;
+    }
+  </style>
+
+    {insight ? (
+        <main class="py-20 px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-12">
+                    <a href="/insights" class="group flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span class="font-semibold">Back to Insights</span>
+                    </a>
+                </div>
+                <div class="text-left mb-12">
+                    <p class="text-sm font-semibold text-gray-400">{insight.category} &bull; {new Date(insight.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <h1 class="text-4xl md:text-6xl font-bold clash-display text-white mt-2">{insight.title}</h1>
+                </div>
+                {parseError ? (
+                    <div class="bg-red-500/20 border border-red-500 text-white p-4 rounded-lg">
+                        <p><strong>Markdown Parsing Error:</strong></p>
+                        <p>{parseError}</p>
+                    </div>
+                ) : (
+                    <article class="prose-custom" set:html={htmlContent} />
+                )}
+            </div>
+        </main>
+    ) : (
+        <main class="py-20 px-4">
+            <div class="max-w-3xl mx-auto text-center bg-[#111] p-8 rounded-lg">
+                <h1 class="text-4xl clash-display text-brand-primary">Insight Not Found</h1>
+                <p class="text-white/70 mt-4">The requested insight could not be loaded. This is likely due to an issue with `getStaticPaths` or the data being passed.</p>
+                <div class="mt-6 text-left bg-black/50 p-4 rounded font-mono text-sm">
+                    <h3 class="font-bold text-white mb-2">Debug Information:</h3>
+                    <pre>Astro.props: {JSON.stringify(Astro.props, null, 2)}</pre>
+                </div>
+                 <a href="/insights" class="mt-8 inline-block text-brand-primary font-semibold hover:underline">← Back to All Insights</a>
+            </div>
+        </main>
+    )}
+</BaseLayout>

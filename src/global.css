@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-dark: #050505;
+  --brand-primary: #e1fe3f;
+}
+
+html {
+  background-color: var(--brand-dark);
+}
+
+body {
+  color: white;
+}
+
+::selection {
+  background-color: var(--brand-primary);
+  color: var(--brand-dark);
+}
+
+.clash-display {
+  font-family: 'Clash Display', sans-serif;
+}
+
+.font-geist {
+  font-family: 'Geist', sans-serif;
+}
+
+.content-card {
+  @apply bg-white/5 border border-white/10 rounded-2xl p-8 md:p-12;
+}
+
+.hero-text {
+  text-wrap: balance;
+}
+
+.hero-subtext {
+  text-wrap: balance;
+}
+
+/* Custom scrollbar for Webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--brand-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
