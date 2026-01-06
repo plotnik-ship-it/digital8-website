@@ -3,7 +3,14 @@ import { marked } from 'marked';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { insights } from '../../content.js';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
+  // If there are no insights, return an empty array to avoid build errors
+  if (!insights || insights.length === 0) {
+    return [];
+  }
+  
   return insights.map(insight => ({
     params: { slug: insight.slug },
     props: { insight },
@@ -20,6 +27,7 @@ if (insight && insight.content) {
         htmlContent = marked.parse(insight.content);
     } catch (e) {
         parseError = e.message;
+        console.error(`Error parsing markdown for insight ${insight.slug}:`, e);
     }
 } else if (insight && !insight.content) {
     htmlContent = "<p>Content is missing for this insight.</p>";
@@ -27,7 +35,7 @@ if (insight && insight.content) {
 
 ---
 
-<BaseLayout title={insight ? insight.title : "Error"} pageDescription={insight ? insight.description : "An error occurred."}>
+<BaseLayout title={insight ? insight.title : "Insight Not Found"} pageDescription={insight ? insight.description : "Insight content not found."}>
   <style is:global>
     body {
       background-color: #050505;
@@ -99,11 +107,7 @@ if (insight && insight.content) {
         <main class="py-20 px-4">
             <div class="max-w-3xl mx-auto text-center bg-[#111] p-8 rounded-lg">
                 <h1 class="text-4xl clash-display text-brand-primary">Insight Not Found</h1>
-                <p class="text-white/70 mt-4">The requested insight could not be loaded. This is likely due to an issue with `getStaticPaths` or the data being passed.</p>
-                <div class="mt-6 text-left bg-black/50 p-4 rounded font-mono text-sm">
-                    <h3 class="font-bold text-white mb-2">Debug Information:</h3>
-                    <pre>Astro.props: {JSON.stringify(Astro.props, null, 2)}</pre>
-                </div>
+                <p class="text-white/70 mt-4">The requested insight could not be loaded.</p>
                  <a href="/insights" class="mt-8 inline-block text-brand-primary font-semibold hover:underline">← Back to All Insights</a>
             </div>
         </main>
