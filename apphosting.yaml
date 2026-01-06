@@ -1,0 +1,15 @@
+# Settings for Firebase App Hosting
+runConfig:
+  runCommand: npm run start
+  cpu: 1
+  memoryMiB: 512
+  concurrency: 80
+  minInstances: 0
+  maxInstances: 10
+env:
+  - variable: HOST
+    value: 0.0.0.0
+  - variable: PORT
+    value: 8080
+  - variable: NODE_ENV
+    value: production
