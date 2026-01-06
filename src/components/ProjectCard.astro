@@ -6,8 +6,16 @@ const { slug, imgSrc, title, description, tags } = project;
 
 <a 
     href={`/projects/${slug}`}
-    class="group block bg-white/5 rounded-lg overflow-hidden border border-white/10 transition-all duration-300 hover:border-brand-primary/80 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1"
+    class="group relative block bg-white/5 rounded-lg overflow-hidden border border-white/10 transition-all duration-300 hover:border-brand-primary/80 hover:shadow-2xl hover:shadow-brand-primary/10 hover:-translate-y-1"
 >
+    <div class="absolute top-4 right-4 z-10 h-10 w-10 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-sm border border-white/10 transition-all duration-300 ease-in-out transform group-hover:bg-brand-primary/20 group-hover:border-brand-primary group-hover:-translate-y-1 group-hover:translate-x-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white/60 group-hover:text-brand-primary transition-colors duration-300" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M17 7l-10 10" />
+            <path d="M8 7l9 0l0 9" />
+        </svg>
+    </div>
+
     <div class="overflow-hidden">
         <img 
             src={imgSrc} 
@@ -22,7 +30,7 @@ const { slug, imgSrc, title, description, tags } = project;
         <p class="text-white/70 mb-4 text-sm leading-relaxed min-h-[40px]">{description}</p> 
         <div class="flex flex-wrap gap-2 mt-4">
             {tags && tags.map(tag => (
-                <span class="bg-white/10 text-white/80 text-xs font-medium px-3 py-1 rounded-full">{tag}</span>
+                <span class="bg-white/10 text-off-white text-xs font-medium px-3 py-1 rounded-full border border-white/20">{tag}</span>
             ))}
         </div>
     </div>

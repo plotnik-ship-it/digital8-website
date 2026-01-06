@@ -8,7 +8,7 @@ export const services = [
     {
         title: "Interactive Experiences",
         description: "We elevate your brand's narrative with advanced animations and fluid interactivity, creating a visual story that captivates users.",
-        icon: "design"
+        icon: "sparkles"
     },
     {
         title: "Web Apps & Client Portals",
@@ -22,28 +22,28 @@ export const caseStudies = [
       slug: "dental-billing",
       title: "SaaS for Dental Clinics",
       description: "Reduced administrative billing time by 40% and eliminated paper invoices entirely.",
-      imgSrc: "/stock/project-1.png",
+      imgSrc: "/dental-1.webp",
       tags: ["SaaS", "React", "Node.js", "Stripe"],
     },
     {
       slug: "local-trades-platform",
       title: "Platform for Local Trades",
       description: "Allowed field workers to send quotes in under 60 seconds, increasing win-rates.",
-      imgSrc: "/stock/project-2.png",
+      imgSrc: "/localtrades-1.webp",
       tags: ["PWA", "Vue.js", "Firebase"],
     },
     {
       slug: "real-estate-search",
       title: "Real Estate Search Engine",
       description: "Custom map-based search engine that increased user retention by 200%.",
-      imgSrc: "/stock/project-3.png",
+      imgSrc: "/realestate-1.webp",
       tags: ["Mapping", "Solid.js", "Elasticsearch"],
     },
     {
       slug: "smart-logistics-dashboard",
       title: "Smart Logistics Dashboard",
       description: "Optimized routing for 50+ vehicles in real-time, cutting fuel costs by 18% annually.",
-      imgSrc: "/stock/project-4.png",
+      imgSrc: "/logistics-thumb.webp",
       tags: ["IoT", "Mapbox", "React", "Firebase"],
     }
 ];

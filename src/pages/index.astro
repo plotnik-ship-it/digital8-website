@@ -4,71 +4,149 @@ import ServiceCard from '../components/ServiceCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import InsightCard from '../components/InsightCard.astro';
 import ContactForm from '../components/ContactForm.jsx';
+import ParticleBackground from '../components/ParticleBackground.astro';
+import MagneticButton from '../components/MagneticButton.jsx';
+import AnimatedElement from '../components/AnimatedElement.astro';
 import { services, caseStudies, insights } from '../content.js';
 ---
+<style>
+    .code-block {
+        background-color: rgba(10, 10, 10, 0.5);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+    }
+    .code-block .dots {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        display: flex;
+        gap: 0.5rem;
+    }
+    .code-block .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+    .code-block .dot-red { background-color: #ff5f56; }
+    .code-block .dot-yellow { background-color: #ffbd2e; }
+    .code-block .dot-green { background-color: #27c93f; }
+
+    .code-block pre {
+        padding-top: 2.5rem; /* Make space for the dots */
+    }
+    .code-block .token.comment { color: #6a9955; }
+    .code-block .token.tag { color: #569cd6; }
+    .code-block .token.attr-name { color: #9cdcfe; }
+    .code-block .token.attr-value { color: #ce9178; }
+    .code-block .token.punctuation { color: #d4d4d4; }
+    .code-block .token.keyword { color: #c586c0; }
+    .code-block .token.plain-text { color: #d4d4d4; }
+</style>
+
 <BaseLayout title="Digital8 - Premium Web & App Development">
 	
 	<!-- Hero Section -->
-	<section class="text-center min-h-[50vh] flex flex-col items-center justify-center -mt-8">
-		<h1 class="hero-text text-5xl md:text-7xl lg:text-8xl clash-display font-semibold max-w-4xl leading-tight">
-			Elite Engineering &<br/> <span class="text-brand-primary">Stunning Design</span>
-		</h1>
-		<p class="hero-subtext text-lg md:text-xl text-white/80 max-w-2xl mt-6">
-			We are a digital agency that partners with ambitious brands to build high-performance websites and applications.
-		</p>
+	<section class="relative min-h-screen flex flex-col items-center justify-center text-center -mt-20 overflow-hidden">
+		<ParticleBackground />
+		<div class="relative z-10 hero-content">
+			<h1 class="hero-text text-5xl md:text-7xl lg:text-8xl clash-display font-semibold max-w-4xl leading-tight">
+				Elite Engineering &<br/> <span class="text-brand-primary">Stunning Design</span>
+			</h1>
+			<p class="hero-subtext mt-6 text-lg md:text-xl text-white/80 max-w-2xl">
+				We are a digital agency that partners with ambitious brands to build<br/> high-performance websites and applications.
+			</p>
+			<div class="hero-cta mt-10">
+                <a href="/#contact">
+                    <MagneticButton client:load>
+                        <span class="bg-brand-primary text-brand-dark font-bold px-8 py-4 rounded-full border-2 border-transparent hover:bg-transparent hover:text-brand-primary hover:border-brand-primary transition-all duration-300 text-lg">
+                            Let's Talk
+                        </span>
+                    </MagneticButton>
+                </a>
+            </div>
+		</div>
 	</section>
 
 	<!-- Work/Services Section -->
-    <section id="work" class="content-card">
-        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Our Craft</h2>
-        <p class="text-lg text-white/70 max-w-3xl mb-12">
-            We specialize in a holistic approach to digital product creation, ensuring every detail is polished to perfection, from the first line of code to the final user interaction.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map(service => <ServiceCard title={service.title} description={service.description} icon={service.icon} />)}
-        </div>
-    </section>
+    <AnimatedElement>
+        <section id="work" class="content-card">
+            <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Our Craft</h2>
+            <p class="text-lg text-white/70 max-w-3xl mb-12">
+                We specialize in a holistic approach to digital product creation, ensuring every detail is polished to perfection, from the first line of code to the final user interaction.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {services.map(service => <ServiceCard title={service.title} description={service.description} icon={service.icon} />)}
+            </div>
+        </section>
+    </AnimatedElement>
 
     <!-- Projects Section -->
-    <section class="content-card mt-24 md:mt-32">
-        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Featured Work</h2>
-        <p class="text-lg text-white/70 max-w-3xl mb-12">
-            We've helped industry leaders and innovative startups alike to realize their digital ambitions. Here’s a glimpse of our impact.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-            {caseStudies.map(project => <ProjectCard project={project} />)}
-        </div>
-    </section>
+    <AnimatedElement>
+        <section class="content-card mt-24 md:mt-32">
+            <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Featured Work</h2>
+            <p class="text-lg text-white/70 max-w-3xl mb-12">
+                We've helped industry leaders and innovative startups alike to realize their digital ambitions. Here’s a glimpse of our impact.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+                {caseStudies.map(project => <ProjectCard project={project} />)}
+            </div>
+        </section>
+    </AnimatedElement>
 
     <!-- About Section -->
-    <section id="about" class="content-card mt-24 md:mt-32">
-        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">The Digital8 Difference</h2>
-        <p class="text-lg text-white/70 max-w-3xl">
-            Founded on the principle of 'less is more', we focus on server-first technologies like Astro to deliver unmatched performance. Our small, senior-led teams embed with our clients to become true partners, turning ambitious ideas into digital reality.
-        </p>
-         <div class="mt-8">
-            <a href="#contact" class="text-brand-primary font-semibold text-lg hover:underline">Let's build together →</a>
-        </div>
-    </section>
+    <AnimatedElement>
+        <section id="about" class="content-card mt-24 md:mt-32">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">The Digital8 Difference</h2>
+                    <p class="text-lg text-white/70">
+                        Founded on the principle of 'less is more', we focus on server-first technologies like Astro to deliver unmatched performance. Our small, senior-led teams embed with our clients to become true partners, turning ambitious ideas into digital reality.
+                    </p>
+                    <div class="mt-8">
+                        <a href="#contact" class="text-brand-primary font-semibold text-lg hover:underline">Let's build together →</a>
+                    </div>
+                </div>
+                <div class="code-block rounded-lg px-6 pb-6 font-mono text-sm">
+                    <div class="dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <pre><code><span class="token comment">&lt;!-- Zero JS is shipped by default --&gt;</span>
+<span class="token tag">&lt;Layout&gt;</span>
+  <span class="token tag">&lt;h1&gt;</span><span class="token plain-text">Static Content</span><span class="token tag">&lt;/h1&gt;</span>
+  
+  <span class="token comment">&lt;!-- This component hydrates on its own --&gt;</span>
+  <span class="token tag">&lt;InteractiveForm <span class="token attr-name">client:load</span> /&gt;</span>
+<span class="token tag">&lt;/Layout&gt;</span></code></pre>
+                </div>
+            </div>
+        </section>
+    </AnimatedElement>
 
     <!-- Insights Section -->
-    <section class="content-card mt-24 md:mt-32">
-        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Our Insights</h2>
-        <p class="text-lg text-white/70 max-w-3xl mb-12">
-            We believe in building in public and sharing our knowledge. Explore our latest articles on technology, design, and digital strategy.
-        </p>
-        <div class="flex flex-col gap-6">
-            {insights.map(insight => <InsightCard {...insight} />)}
-        </div>
-    </section>
+    <AnimatedElement>
+        <section class="content-card mt-24 md:mt-32">
+            <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Our Insights</h2>
+            <p class="text-lg text-white/70 max-w-3xl mb-12">
+                We believe in building in public and sharing our knowledge. Explore our latest articles on technology, design, and digital strategy.
+            </p>
+            <div class="flex flex-col gap-6">
+                {insights.map(insight => <InsightCard {...insight} />)}
+            </div>
+        </section>
+    </AnimatedElement>
     
     <!-- Contact Section -->
-    <section id="contact" class="content-card mt-24 md:mt-32">
-        <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Have a project in mind?</h2>
-        <p class="text-lg text-white/70 max-w-3xl mb-12">
-            We're ready to listen. Fill out the form below, and we'll get back to you within 24 hours to schedule an introductory call.
-        </p>
-        <ContactForm client:visible />
-    </section>
+    <AnimatedElement>
+        <section id="contact" class="content-card mt-24 md:mt-32">
+            <h2 class="text-4xl md:text-5xl clash-display font-semibold mb-4">Have a project in mind?</h2>
+            <p class="text-lg text-white/70 max-w-3xl mb-12">
+                We're ready to listen. Fill out the form below, and we'll get back to you within 24 hours to schedule an introductory call.
+            </p>
+            <ContactForm client:visible />
+        </section>
+    </AnimatedElement>
 
 </BaseLayout>

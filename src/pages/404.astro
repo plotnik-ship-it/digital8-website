@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MagneticButton from '../components/MagneticButton.jsx';
+---
+<style>
+    .terminal-text::after {
+        content: '_';
+        animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+</style>
+
+<BaseLayout title="404: Page Not Found - Digital8" pageDescription="Error 404 - Page not found.">
+  <main class="min-h-screen flex items-center justify-center text-center -mt-20">
+    <div class="font-mono text-lg text-white/80">
+      <p class="mb-2 text-red-500">> Error 404: Page not found.</p>
+      <p class="mb-2">> Initiating recovery sequence...</p>
+      <p class="terminal-text">> Redirecting to <a href="/" class="text-brand-primary underline hover:text-white">Home</a></p>
+      
+      <div class="mt-12">
+        <a href="/">
+          <MagneticButton client:load>
+            <span class="bg-brand-primary text-brand-dark font-bold px-8 py-4 rounded-full border-2 border-transparent hover:bg-transparent hover:text-brand-primary hover:border-brand-primary transition-all duration-300 text-lg">
+              Return to Base
+            </span>
+          </MagneticButton>
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+    // Optional: Add a countdown redirect
+    let countdown = 3;
+    const countdownElement = document.createElement('span');
+    const terminalLine = document.querySelector('.terminal-text');
+    
+    if (terminalLine) {
+        terminalLine.appendChild(countdownElement);
+        const interval = setInterval(() => {
+            countdownElement.textContent = ` in ${countdown}...`;
+            countdown--;
+            if (countdown < 0) {
+                clearInterval(interval);
+                // window.location.href = '/';
+            }
+        }, 1000);
+    }
+</script>

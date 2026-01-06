@@ -8,47 +8,73 @@ const {
     pageDescription = "We build high-performance websites and applications for ambitious brands. Combining elite engineering with stunning design to deliver digital experiences that drive results."
 } = Astro.props;
 
-// All navigation links are now in one place for consistent behavior.
 const navLinks = [
-    { href: "/#work", text: "Home", sectionId: "work" },
-    { href: "/#about", text: "About", sectionId: "about" },
-    { href: "/insights", text: "Insights", sectionId: "insights" },
-    { href: "/#contact", text: "Contact", sectionId: "contact" }
+    { href: "/#work", text: "Work" },
+    { href: "/#about", text: "About" },
+    { href: "/insights", text: "Insights" },
+    { href: "/#contact", text: "Contact" }
 ];
+
+// Construct a full URL for the canonical link
+const siteURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : new URL(Astro.url.pathname, Astro.url.origin);
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+        <!-- Standard SEO -->
 		<meta charset="UTF-8" />
 		<meta name="description" content={pageDescription} />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+        <link rel="canonical" href={siteURL.href} />
+
+        <!-- Open Graph (for social sharing) -->
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={siteURL.href} />
+        <meta property="og:image" content={new URL('/og-image.jpg', siteURL).href} />
+        <meta property="og:image:alt" content="Digital8 Agency Logo and Tagline" />
+        <meta property="og:site_name" content="Digital8" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={new URL('/og-image.jpg', siteURL).href} />
+        <meta name="twitter:image:alt" content="Digital8 Agency Logo and Tagline" />
+
         <ViewTransitions />
 	</head>
 	<body class="bg-brand-dark text-white font-geist">
-        <header class="fixed top-0 left-0 w-full z-50">
-            <div class="container mx-auto px-4 md:px-8 py-4">
-                <div class="flex justify-between items-center">
+        <div class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 pt-4">
+            <header id="main-header" class="container mx-auto rounded-2xl">
+                <div class="flex justify-between items-center px-6 py-3">
                     <!-- Left: Logo -->
                     <a href="/" class="relative z-10">
                         <img src="/full-logo.png" alt="Digital8 Logo" class="h-6 md:h-7 transition-transform duration-300 hover:scale-105" />
                     </a>
 
-                    <!-- Center: Desktop Navigation -->
-                    <nav class="hidden md:flex items-center gap-1 bg-white/10 backdrop-blur-md rounded-full p-1">
-                        {navLinks.map(link => (
-                            <a href={link.href} class="nav-link text-white rounded-full transition-colors duration-300" data-section={link.sectionId}>
-                                <MagneticButton client:load>
-                                    <span class="px-4 py-2 block text-sm">{link.text}</span>
-                                </MagneticButton>
+                    <!-- Right: Desktop Navigation -->
+                    <nav class="hidden md:flex items-center gap-8 text-sm">
+                        {navLinks.slice(0, -1).map(link => (
+                            <a href={link.href} class="nav-link text-white/70 hover:text-white transition-colors duration-300 font-medium">
+                                {link.text}
                             </a>
                         ))}
+                         <a href={navLinks.at(-1).href}>
+                            <MagneticButton client:load>
+                                <span class="bg-white/10 text-white font-medium px-5 py-2.5 rounded-full border border-white/20 hover:border-white/50 transition-all duration-300">
+                                    {navLinks.at(-1).text}
+                                </span>
+                            </MagneticButton>
+                        </a>
                     </nav>
 
-                    <!-- Right: Mobile Menu Toggle -->
+                    <!-- Mobile Menu Toggle -->
                     <div class="md:hidden font-semibold z-10">
                         <button id="mobile-menu-toggle" type="button" aria-label="Open Menu">
                             <MagneticButton client:load>
@@ -57,8 +83,8 @@ const navLinks = [
                         </button>
                     </div>
                 </div>
-            </div>
-        </header>
+            </header>
+        </div>
 
 		<div id="mobile-menu-overlay" class="fixed inset-0 bg-brand-dark z-40 flex flex-col items-center justify-center gap-8 text-center hidden">
             <nav class="flex flex-col gap-6">
@@ -68,16 +94,65 @@ const navLinks = [
             </nav>
         </div>
 		
-		<main class="relative z-10 px-4 md:px-8 py-32 sm:py-36">
-			<slot />
+		<main class="relative z-10 py-32 sm:py-36">
+			<div class="container mx-auto px-4 md:px-8">
+				<slot />
+			</div>
 		</main>
 	
-		<footer class="text-center p-8 text-gray-500 border-t border-gray-900 mt-24">
-			© {new Date().getFullYear()} Digital8. All Rights Reserved.
-		</footer>
+		<footer class="mt-24">
+            <div class="container mx-auto px-4 md:px-8">
+                <div class="border-t border-white/10 pt-12 pb-12">
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <!-- Left: Brand -->
+                        <div class="md:col-span-1">
+                            <img src="/full-logo.png" alt="Digital8 Logo" class="h-7 mb-4" />
+                            <p class="text-white/60 text-sm">Building the future of digital experiences.</p>
+                        </div>
+                        
+                        <!-- Center: Socials -->
+                        <div class="md:col-span-1 md:flex md:justify-center">
+                            <div>
+                                <h3 class="text-sm font-semibold text-white/80 mb-4">Connect</h3>
+                                <a href="https://www.linkedin.com/in/daniel-plotnik" target="_blank" rel="noopener noreferrer" class="text-white/60 hover:text-brand-primary transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                      <path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" />
+                                      <path d="M8 11l0 5" />
+                                      <path d="M8 8l0 .01" />
+                                      <path d="M12 16l0 -5" />
+                                      <path d="M16 16v-3a2 2 0 0 0 -4 0" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Right: Links -->
+                        <div class="md:col-span-1 md:text-right">
+                             <h3 class="text-sm font-semibold text-white/80 mb-4">Navigate</h3>
+                             <ul class="space-y-3">
+                                <li><a href="/#work" class="text-white/60 hover:text-white transition-colors">Work</a></li>
+                                <li><a href="/#about" class="text-white/60 hover:text-white transition-colors">About</a></li>
+                                <li><a href="/insights" class="text-white/60 hover:text-white transition-colors">Insights</a></li>
+                             </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/10 py-6 text-sm text-white/50">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <p>&copy; {new Date().getFullYear()} Digital8. All Rights Reserved.</p>
+                        <div class="flex gap-6">
+                            <a href="/privacy-policy" class="hover:text-white transition-colors">Privacy Policy</a>
+                            <a href="/terms-of-service" class="hover:text-white transition-colors">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 	
-		<div class="left-curtain fixed top-0 left-0 h-screen w-1/2 bg-brand-dark z-[9999]" style="height: 100vh"></div>
-        <div class="right-curtain fixed top-0 right-0 h-screen w-1/2 bg-brand-dark z-[9999]" style="height: 100vh"></div>
+		<div data-curtain="left" class="fixed top-0 left-0 h-screen w-1-2 bg-brand-dark z-[9999]"></div>
+        <div data-curtain="right" class="fixed top-0 right-0 h-screen w-1-2 bg-brand-dark z-[9999]"></div>
 
 		<script type="module" src="/src/scripts/main.js"></script>
 	</body>

@@ -1,16 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const techStack = ["PWA", "Vue.js", "Firebase"];
+const techStack = ["PWA", "Vue.js", "Firebase", "Geolocation"];
 
 const keyFeatures = [
-  "Instant Quote Generation",
-  "Mobile-First Design for Field Work",
-  "Real-Time Client Communication",
+  "Instant Quote Generation: Field workers can create and send professional PDF quotes from their mobile devices in under 60 seconds.",
+  "Job Scheduling & Dispatch: A central calendar allows office staff to assign jobs to the nearest available worker based on GPS location.",
+  "Client Communication Hub: In-app messaging and status updates keep clients informed, reducing calls to the office.",
 ];
 ---
 
-<BaseLayout title="Case Study: Platform for Local Trades" pageDescription="A mobile-first PWA that allows field workers to send quotes in under 60 seconds, increasing win-rates.">
+<BaseLayout title="Case Study: Local Trades Platform" pageDescription="A Progressive Web App (PWA) designed for local trade businesses to manage jobs, quotes, and client communication.">
   <style>
     body {
       background-color: #050505;
@@ -23,12 +23,12 @@ const keyFeatures = [
       <!-- Header -->
       <div class="text-center mb-16">
         <h1 class="text-5xl md:text-7xl font-bold clash-display" style="color: #e1fe3f;">Platform for Local Trades</h1>
-        <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl mx-auto">A mobile-first PWA that allows field workers to send quotes in under 60 seconds, increasing win-rates.</p>
+        <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl mx-auto">A Progressive Web App (PWA) designed for local trade businesses to manage jobs, quotes, and client communication.</p>
       </div>
 
       <!-- Main Image -->
       <div class="mb-16">
-        <img src="/localtrades-full.webp" alt="Local Trades Quoting Platform" class="w-full rounded-2xl shadow-2xl shadow-electric-yellow/10 border border-white/10">
+        <img src="/localtrades-full.webp" alt="Platform for Local Trades" class="w-full rounded-2xl shadow-2xl shadow-electric-yellow/10 border border-white/10">
       </div>
 
       <!-- Tech Stack -->
@@ -43,11 +43,11 @@ const keyFeatures = [
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
             <h2 class="text-3xl font-bold clash-display text-off-white">The Problem</h2>
-            <p>Tradespeople and contractors often rely on pen-and-paper notes or slow, cumbersome desktop software to create and send quotes. This process is inefficient, prone to errors, and can lead to lost business if a potential client has to wait hours or days for a price.</p>
+            <p>Local trade businesses (plumbers, electricians, etc.) often rely on messy paperwork and constant phone calls between the office and field workers. This creates quoting delays, scheduling conflicts, and a poor customer experience.</p>
           </div>
           <div>
             <h2 class="text-3xl font-bold clash-display text-off-white">The Solution</h2>
-            <p>We built a Progressive Web App (PWA) that works flawlessly on any phone, tablet, or desktop. It allows field workers to generate and send professional, accurate quotes directly from the job site in under a minute, drastically improving their ability to win bids.</p>
+            <p>We built a mobile-first Progressive Web App (PWA) that acts as an all-in-one field service management tool. It's installable on any device and works offline, syncing data once a connection is available.</p>
             <ul class="mt-6 space-y-4">
               {keyFeatures.map(feature => (
                 <li class="flex items-start">
@@ -58,10 +58,18 @@ const keyFeatures = [
             </ul>
           </div>
         </div>
+
+        <div class="mt-16 text-center bg-white/5 rounded-2xl p-8 border border-white/10">
+          <h2 class="text-3xl font-bold clash-display text-off-white">Business Impact</h2>
+          <p class="text-xl text-gray-300 mt-2 max-w-2xl mx-auto">The app enabled field workers to send quotes <strong style="color: #e1fe3f">80% faster</strong> than the previous paper-based method, leading to higher quote acceptance rates.</p>
+        </div>
       </div>
 
       <!-- CTA -->
-      <div class="text-center mt-24">
+       <div class="text-center mt-24 flex flex-col sm:flex-row items-center justify-center gap-6">
+        <a href="/#work" class="group relative px-10 py-5 border border-white/30 rounded-full overflow-hidden inline-block transition-all text-white/80 hover:text-white hover:border-white font-medium text-lg">
+          <span>← Back to Work</span>
+        </a>
         <a href="/#contact" class="group relative px-10 py-5 border border-electric-yellow rounded-full overflow-hidden inline-block transition-all text-electric-yellow btn-glow font-bold text-lg">
           <span class="relative z-10 group-hover:text-brand-dark transition-colors duration-300">Discuss This Solution</span>
           <div class="absolute inset-0 bg-electric-yellow translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>

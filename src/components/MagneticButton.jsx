@@ -1,43 +1,49 @@
+
 import React, { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 
 const MagneticButton = ({ children }) => {
-  const magneticRef = useRef(null);
+    const buttonRef = useRef(null);
+    const textRef = useRef(null);
 
-  useEffect(() => {
-    const magnetic = magneticRef.current;
-    if (!magnetic) return;
+    useEffect(() => {
+        const button = buttonRef.current;
+        const text = textRef.current;
 
-    // Dynamically import GSAP only on the client-side
-    import('gsap').then(({ gsap }) => {
-        const mouseMove = (e) => {
+        if (!button || !text) return;
+
+        const handleMouseMove = (e) => {
             const { clientX, clientY } = e;
-            const { top, left, width, height } = magnetic.getBoundingClientRect();
+            const { top, left, width, height } = button.getBoundingClientRect();
             const x = clientX - (left + width / 2);
             const y = clientY - (top + height / 2);
-            gsap.to(magnetic, { x: x * 0.4, y: y * 0.4, duration: 1, ease: "elastic.out(1, 0.5)" });
+            
+            gsap.to(button, { x: x * 0.4, y: y * 0.4, duration: 0.8, ease: 'power3.out' });
+            gsap.to(text, { x: x * 0.2, y: y * 0.2, duration: 0.8, ease: 'power3.out' });
         };
 
-        const mouseLeave = () => {
-            gsap.to(magnetic, { x: 0, y: 0, duration: 1, ease: "elastic.out(1, 0.5)" });
+        const handleMouseLeave = () => {
+            gsap.to([button, text], { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.4)' });
         };
 
-        magnetic.addEventListener('mousemove', mouseMove);
-        magnetic.addEventListener('mouseleave', mouseLeave);
+        button.addEventListener('mousemove', handleMouseMove);
+        button.addEventListener('mouseleave', handleMouseLeave);
 
-        // Cleanup function to remove event listeners
         return () => {
-            magnetic.removeEventListener('mousemove', mouseMove);
-            magnetic.removeEventListener('mouseleave', mouseLeave);
+            button.removeEventListener('mousemove', handleMouseMove);
+            button.removeEventListener('mouseleave', handleMouseLeave);
         };
-    }).catch(error => console.error("Failed to load GSAP", error));
+    }, []);
 
-  }, []); // Empty dependency array ensures this runs only once on mount
+    // Clone the child to attach the ref correctly
+    const child = React.Children.only(children);
+    const clonedChild = React.cloneElement(child, { ref: textRef });
 
-  return (
-    <div ref={magneticRef} style={{ display: 'inline-block' }}>
-        {children}
-    </div>
-  );
+    return (
+        <div ref={buttonRef} className="magnetic-button inline-block">
+            {clonedChild}
+        </div>
+    );
 };
 
 export default MagneticButton;

@@ -4,11 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        'electric-yellow': '#e1fe3f',
-        'off-white': '#fefefe',
         'brand-dark': '#050505',
+        'brand-primary': '#e1fe3f',
+        'off-white': '#f7f7f7',
       },
+      fontFamily: {
+        geist: ['Geist', 'sans-serif'],
+      }
     },
   },
-  plugins: [],
-};
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
+}

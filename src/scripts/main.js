@@ -1,192 +1,179 @@
+
+import Lenis from '@studio-freight/lenis'
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
-import Lenis from "@studio-freight/lenis";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// This function is the single entry point. It will be called by the client.
-export function init() {
-    // Ensure this entire script runs only once
-    if (document.body.hasAttribute('data-site-initialized')) {
-        console.log("INIT: Site already initialized, returning.");
-        return;
+gsap.registerPlugin(ScrollTrigger);
+
+document.addEventListener('astro:page-load', () => {
+    // --- HEADER SCROLL EFFECT ---
+    const header = document.getElementById('main-header');
+    if (header) {
+        ScrollTrigger.create({
+            start: "top top",
+            end: 99999,
+            onUpdate: (self) => {
+                if (self.scroll() > 50) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+            }
+        });
     }
-    document.body.setAttribute('data-site-initialized', 'true');
-    console.log("INIT: Initializing site.");
 
-    gsap.registerPlugin(ScrollTrigger);
+    // --- CURTAIN ANIMATION ---
+    const leftCurtain = document.querySelector('[data-curtain="left"]');
+    const rightCurtain = document.querySelector('[data-curtain="right"]');
 
-    let lenis;
+    if(leftCurtain && rightCurtain) {
+        const curtainTimeline = gsap.timeline();
+        curtainTimeline
+            .to(leftCurtain, {
+                height: 0,
+                duration: 1.4,
+                ease: "expo.inOut"
+            })
+            .to(rightCurtain, {
+                height: 0,
+                duration: 1.4,
+                ease: "expo.inOut"
+            }, "-=1.2");
+    }
 
-    // --- ONE-TIME INITIALIZATION --- 
+    // --- LENOIS SCROLL (APPLE/FRAMER-LIKE SETTINGS) ---
+    const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // This creates the "Apple" (Expo Out) effect
+        direction: 'vertical',
+        smooth: true,
+        smoothTouch: false, // IMPORTANT: Let mobile use its native scroll.
+    });
 
-    function initSmoothScroll() {
-        console.log("INIT: Initializing smooth scroll.");
-        lenis = new Lenis({ lerp: 0.08, wheelMultiplier: 0.8 });
-        lenis.on('scroll', ScrollTrigger.update);
-        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+    function raf(time) {
+        lenis.raf(time);
         requestAnimationFrame(raf);
     }
+    requestAnimationFrame(raf);
 
-    function initNavigation() {
-        console.log("INIT: Initializing navigation.");
-        const menuOverlay = document.getElementById('mobile-menu-overlay');
-        const menuText = document.getElementById('mobile-menu-text');
-        let isMenuOpen = false;
+    gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
 
-        const toggleMenu = () => {
-            isMenuOpen = !isMenuOpen;
+
+    // --- "BUTTERY" GSAP ANIMATIONS ---
+
+    // Hero Animation & Parallax
+    const heroContent = document.querySelector(".hero-content");
+    if (heroContent) {
+        const heroTimeline = gsap.timeline({ delay: 0.4 });
+        heroTimeline
+            .from(".hero-text", { 
+                duration: 1.6, 
+                y: 120, 
+                opacity: 0, 
+                ease: "expo.out",
+            })
+            .from(".hero-subtext", { 
+                duration: 1.4, 
+                y: 60, 
+                opacity: 0, 
+                ease: "expo.out" 
+            }, "-=1.2")
+            .from(".hero-cta", {
+                duration: 1.4,
+                y: 40,
+                opacity: 0,
+                ease: "expo.out"
+            }, "-=1.1");
+        
+        // Hero Parallax on scroll
+        gsap.to(heroContent, {
+            yPercent: -20,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "section:first-of-type",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    }
+
+
+    // Content Card Animations & Parallax
+    gsap.utils.toArray('.content-card').forEach(card => {
+        // Entrance Animation
+        if (card.children.length > 0) {
+            gsap.from(card.children, {
+                y: 60,
+                opacity: 0,
+                duration: 1.2,
+                ease: 'expo.out',
+                stagger: 0.1,
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none',
+                }
+            });
+        }
+
+        // Parallax on scroll
+        gsap.to(card, {
+            yPercent: -5,
+            ease: "none",
+            scrollTrigger: {
+                trigger: card,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+    });
+
+    // Magnetic Buttons
+    const magneticButtons = document.querySelectorAll('.magnetic-button');
+    magneticButtons.forEach(button => {
+        const textElement = button.querySelector('span');
+        if (!textElement) return;
+        
+        button.addEventListener('mousemove', (e) => {
+            const { offsetX, offsetY, target } = e;
+            const { clientWidth, clientHeight } = target;
+            
+            const x = (offsetX / clientWidth) - 0.5;
+            const y = (offsetY / clientHeight) - 0.5;
+
+            gsap.to(button, { x: x * 40, y: y * 40, duration: 1, ease: 'expo.out' });
+            gsap.to(textElement, { x: x * 20, y: y * 20, duration: 1, ease: 'expo.out' });
+        });
+
+        button.addEventListener('mouseleave', () => {
+            gsap.to([button, textElement], { x: 0, y: 0, duration: 1.2, ease: 'elastic.out(1, 0.4)' });
+        });
+    });
+
+    // Mobile Menu
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const menuOverlay = document.getElementById('mobile-menu-overlay');
+    const menuText = document.getElementById('mobile-menu-text');
+
+    if (menuToggle && menuOverlay && menuText) {
+        menuToggle.addEventListener('click', () => {
             menuOverlay.classList.toggle('hidden');
-            document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
-            if(menuText) menuText.textContent = isMenuOpen ? 'Close' : 'Menu';
-        }
-
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#mobile-menu-toggle')) {
-                toggleMenu();
-            }
-            if (e.target.closest('.mobile-nav-link') && isMenuOpen) {
-                toggleMenu();
-            }
+            const isOpen = !menuOverlay.classList.contains('hidden');
+            menuText.textContent = isOpen ? 'Close' : 'Menu';
+            document.body.style.overflow = isOpen ? 'hidden' : '';
         });
-    }
 
-    function initActiveNav() {
-        console.log("INIT: Initializing active navigation logic.");
-        const sections = document.querySelectorAll('main > section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        sections.forEach(section => {
-            ScrollTrigger.create({
-                trigger: section,
-                start: "top 50%",
-                end: "bottom 50%",
-                onToggle: self => {
-                    if (self.isActive) {
-                        const id = section.getAttribute('id');
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('data-section') === id) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                }
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOverlay.classList.add('hidden');
+                menuText.textContent = 'Menu';
+                document.body.style.overflow = '';
             });
         });
-
-        // Special case for "Home" link when at the top
-        ScrollTrigger.create({
-            trigger: document.body,
-            start: "top top",
-            end: "bottom top",
-            onUpdate: self => {
-                const homeLink = document.querySelector('.nav-link[data-section="work"]');
-                if (self.direction === -1 && self.progress === 0 && homeLink) {
-                    navLinks.forEach(link => link.classList.remove('active'));
-                    homeLink.classList.add('active');
-                }
-            }
-        });
     }
-
-    // --- PER-PAGE FUNCTIONS --- 
-
-    function runPageAnimations() {
-        console.log("PAGE ANIMATIONS: Running page animations.");
-        ScrollTrigger.getAll().forEach(t => t.kill());
-
-        const pageLoadTl = gsap.timeline();
-        pageLoadTl.to(".left-curtain", { height: 0, duration: 1.2, ease: "power3.inOut" })
-          .to(".right-curtain", { height: 0, duration: 1.2, ease: "power3.inOut" }, "-=1.2")
-          .to("header", { opacity: 1, duration: 1, ease: "power2.out" }, "-=0.5");
-
-        if (document.querySelector('.hero-text')) {
-            pageLoadTl.fromTo(".hero-text", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.8")
-              .fromTo(".hero-subtext", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, "-=0.7");
-        }
-
-        gsap.utils.toArray('.content-card').forEach(card => {
-            const header = card.querySelector('.clash-display');
-            const paragraph = card.querySelector('p');
-            const serviceCards = card.querySelectorAll('.service-card');
-            const projectCards = card.querySelectorAll('.project-card');
-            const insightCards = card.querySelectorAll('.insight-card');
-            const otherContent = card.querySelector(':not(.clash-display):not(p):not(.service-card):not(.project-card):not(.insight-card)');
-
-            const cardTl = gsap.timeline({ 
-                scrollTrigger: { 
-                    trigger: card, 
-                    start: 'top 85%', 
-                    toggleActions: 'play none none none'
-                }
-            });
-
-            if (header) {
-                cardTl.fromTo(header, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
-            }
-            if (paragraph) {
-                cardTl.fromTo(paragraph, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, "-=0.6");
-            }
-
-            if (serviceCards.length > 0) {
-                cardTl.fromTo(serviceCards, { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.15, duration: 0.7, ease: 'power2.out' }, "-=0.5");
-            } 
-            else if (projectCards.length > 0) {
-                 cardTl.fromTo(projectCards, { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.2, duration: 0.7, ease: 'power2.out' }, "-=0.5");
-            }
-            else if (insightCards.length > 0) {
-                 cardTl.fromTo(insightCards, { opacity: 0, y: 20 }, { opacity: 1, y: 0, stagger: 0.1, duration: 0.6, ease: 'power2.out' }, "-=0.5");
-            }
-            else if (otherContent) {
-                cardTl.fromTo(otherContent, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out' }, "-=0.6");
-            }
-        });
-    }
-
-    function handleHashOnLoad() {
-        console.log("PAGE ANIMATIONS: Handling hash on load.");
-        if (window.location.hash && lenis) {
-             // Use a small timeout to ensure the page is settled before scrolling
-            setTimeout(() => {
-                lenis.scrollTo(window.location.hash, { offset: -80, duration: 1.5 });
-            }, 100);
-        }
-    }
-
-    // --- ASTRO LIFECYCLE HOOKS ---
-    
-    document.addEventListener('astro:before-swap', (e) => {
-        console.log("ASTRO LIFECYCLE: astro:before-swap triggered.");
-        const toUrl = new URL(e.to);
-        const fromUrl = new URL(e.from);
-
-        if (toUrl.pathname === fromUrl.pathname && toUrl.hash) {
-            if (!document.getElementById('mobile-menu-overlay').classList.contains('hidden')) {
-                document.getElementById('mobile-menu-toggle').click();
-            }
-            return;
-        }
-
-        e.preventDefault();
-        const tl = gsap.timeline({ onComplete: () => e.swap() });
-        tl.to(".left-curtain", { height: "100vh", duration: 0.6, ease: "power3.in" })
-          .to(".right-curtain", { height: "100vh", duration: 0.6, ease: "power3.in" }, "-=0.6");
-    });
-
-    document.addEventListener('astro:page-load', () => {
-        console.log("ASTRO LIFECYCLE: astro:page-load triggered.");
-        runPageAnimations();
-        handleHashOnLoad();
-        initActiveNav(); // Initialize active nav logic on every page load
-    });
-    
-    // --- INITIAL EXECUTION ---
-    initSmoothScroll();
-    initNavigation();
-    // runPageAnimations(); // Removed direct call here, now handled by astro:page-load
-    handleHashOnLoad();
-    initActiveNav(); // Also initialize on the very first load
-}
+});

@@ -13,7 +13,23 @@ html {
 
 body {
   color: white;
+  position: relative;
 }
+
+/* Grain Effect Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXVpaWl9fX15eXl2dnZ6enqurq5zc3NsbGxwsLCysrKRkZGYmJi0tLS8vLza2try8vLz8/P5+fnc3Nz29vbx8fH+/v7j4+Pj4+OMaAbfAAAAUElEQVR42u3TMRGAMAwDAcf/b8aAAnI7PjCrEAAA/L44z0516y61y6/M6/b5/q9v349bO3G/lv21/lv2fVv2T+v3a/1f29/b/y8BAAAA/C4gBwA+QZ4tUAAAAABJRU5ErkJggg==');
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 
 ::selection {
   background-color: var(--brand-primary);
@@ -39,6 +55,16 @@ body {
 .hero-subtext {
   text-wrap: balance;
 }
+
+#main-header {
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+  border: 1px solid transparent;
+}
+
+#main-header.header-scrolled {
+  @apply bg-brand-dark/80 backdrop-blur-lg border-white/10;
+}
+
 
 /* Custom scrollbar for Webkit browsers */
 ::-webkit-scrollbar {

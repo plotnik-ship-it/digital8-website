@@ -1,109 +1,78 @@
-<canvas id="particle-canvas" class="absolute top-0 left-0 w-full h-full z-0"></canvas>
+<div id="particle-background" class="absolute inset-0 z-0"></div>
 
-<script>
+<script is:inline>
 document.addEventListener('DOMContentLoaded', () => {
-  const canvas = document.getElementById('particle-canvas');
-  if (!canvas) return;
-
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let mouse = { x: null, y: null, radius: 150 };
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  window.addEventListener('mousemove', (event) => {
-    mouse.x = event.x;
-    mouse.y = event.y;
-  });
-
-  class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-      this.x = x;
-      this.y = y;
-      this.directionX = directionX;
-      this.directionY = directionY;
-      this.size = size;
-      this.color = color;
-      this.baseX = this.x;
-      this.baseY = this.y;
-      this.density = (Math.random() * 30) + 1;
+    if (typeof particlesJS === 'undefined') {
+        console.error('particles.js not loaded');
+        return;
     }
 
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-      ctx.fill();
-    }
-
-    update() {
-      let dx = mouse.x - this.x;
-      let dy = mouse.y - this.y;
-      let distance = Math.sqrt(dx * dx + dy * dy);
-      let forceDirectionX = dx / distance;
-      let forceDirectionY = dy / distance;
-      let maxDistance = mouse.radius;
-      let force = (maxDistance - distance) / maxDistance;
-      let directionX = forceDirectionX * force * this.density;
-      let directionY = forceDirectionY * force * this.density;
-
-      if (distance < mouse.radius) {
-        this.x -= directionX;
-        this.y -= directionY;
-      } else {
-        if (this.x !== this.baseX) {
-          let dx = this.x - this.baseX;
-          this.x -= dx / 10;
-        }
-        if (this.y !== this.baseY) {
-          let dy = this.y - this.baseY;
-          this.y -= dy / 10;
-        }
-      }
-      this.draw();
-    }
-  }
-
-  function init() {
-    particles = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 9000;
-    for (let i = 0; i < numberOfParticles; i++) {
-      let size = (Math.random() * 1.5) + 0.5;
-      let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-      let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-      let directionX = (Math.random() * 0.2) - 0.1;
-      let directionY = (Math.random() * 0.2) - 0.1;
-      let color = '#8C5523';
-      particles.push(new Particle(x, y, directionX, directionY, size, color));
-    }
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-
-    for (let i = 0; i < particles.length; i++) {
-      particles[i].update();
-    }
-  }
-
-  init();
-  animate();
-
-  // Re-init on resize to adjust particle density
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-          resizeCanvas();
-          init();
-      }, 250);
-  });
+    particlesJS('particle-background', {
+        "particles": {
+            "number": {
+                "value": 160,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle"
+            },
+            "opacity": {
+                "value": 0.8,
+                "random": true,
+                "anim": {
+                    "enable": true,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 2.5,
+                "random": true,
+                "anim": {
+                    "enable": false
+                }
+            },
+            "line_linked": {
+                "enable": false
+            },
+            "move": {
+                "enable": true,
+                "speed": 0.5, // Slower ambient drift for a calmer feel
+                "direction": "none",
+                "random": true,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": false
+                },
+                "resize": true
+            },
+            "modes": {
+                "repulse": {
+                    "distance": 150, // Increased distance for a wider interaction area
+                    "duration": 0.6   // Slightly longer duration for a smoother reaction
+                }
+            }
+        },
+        "retina_detect": true
+    });
 });
 </script>
+<script is:inline src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>

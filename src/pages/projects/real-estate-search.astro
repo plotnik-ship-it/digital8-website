@@ -1,16 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const techStack = ["Mapping", "Solid.js", "Elasticsearch"];
+const techStack = ["Mapping", "Solid.js", "Elasticsearch", "Node.js"];
 
 const keyFeatures = [
-  "Interactive, Real-Time Map Search",
-  "Advanced Filtering by Zone & Amenities",
-  "Saved Searches & User Alerts",
+  "Custom Map Overlays: Displayed school district boundaries, zoning regulations, and neighborhood amenities directly on the map.",
+  "Blazing Fast Search: Powered by Elasticsearch, search queries and complex filters returned results in under 50ms.",
+  "Saved Searches & Alerts: Users could save their preferred search criteria and receive email notifications for new matching listings.",
 ];
 ---
 
-<BaseLayout title="Case Study: Real Estate Search Engine" pageDescription="A custom map-based search engine that increased user retention by 200%.">
+<BaseLayout title="Case Study: Real Estate Search Engine" pageDescription="A high-performance, map-based real estate search engine with custom data overlays and advanced filtering.">
   <style>
     body {
       background-color: #050505;
@@ -23,12 +23,12 @@ const keyFeatures = [
       <!-- Header -->
       <div class="text-center mb-16">
         <h1 class="text-5xl md:text-7xl font-bold clash-display" style="color: #e1fe3f;">Real Estate Search Engine</h1>
-        <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl mx-auto">A custom map-based search engine that increased user retention by 200%.</p>
+        <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-3xl mx-auto">A high-performance, map-based real estate search engine with custom data overlays and advanced filtering.</p>
       </div>
 
       <!-- Main Image -->
       <div class="mb-16">
-        <img src="/realestate-full.webp" alt="Map-based Real Estate Search" class="w-full rounded-2xl shadow-2xl shadow-electric-yellow/10 border border-white/10">
+        <img src="/realestate-full.webp" alt="Real Estate Search Engine" class="w-full rounded-2xl shadow-2xl shadow-electric-yellow/10 border border-white/10">
       </div>
 
       <!-- Tech Stack -->
@@ -43,11 +43,11 @@ const keyFeatures = [
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
             <h2 class="text-3xl font-bold clash-display text-off-white">The Problem</h2>
-            <p>Standard real estate websites present listings in a simple, boring list format. Users have to click back and forth between a map and the search results, leading to a frustrating and disjointed experience. This high friction causes users to abandon the site quickly.</p>
+            <p>Standard real estate platforms offer generic search filters that don't cater to savvy buyers. Users need to cross-reference multiple sites to gather data on school districts, local amenities, and property history, making the search process tedious.</p>
           </div>
           <div>
             <h2 class="text-3xl font-bold clash-display text-off-white">The Solution</h2>
-            <p>We built an immersive, map-first search engine that became the core of the user experience. Users can pan, zoom, and draw on a map to instantly see properties in their desired area. This intuitive and engaging interface led to users spending significantly more time on the site.</p>
+            <p>We built a bespoke search engine from the ground up, centered around an interactive map. We ingested and layered multiple third-party data sources to create a unified, intuitive, and powerful search experience.</p>
             <ul class="mt-6 space-y-4">
               {keyFeatures.map(feature => (
                 <li class="flex items-start">
@@ -58,10 +58,18 @@ const keyFeatures = [
             </ul>
           </div>
         </div>
+
+        <div class="mt-16 text-center bg-white/5 rounded-2xl p-8 border border-white/10">
+          <h2 class="text-3xl font-bold clash-display text-off-white">Business Impact</h2>
+          <p class="text-xl text-gray-300 mt-2 max-w-2xl mx-auto">The custom engine became the company's primary lead generation tool, increasing user retention by <strong style="color: #e1fe3f">200%</strong> compared to their previous IDX-based solution.</p>
+        </div>
       </div>
 
       <!-- CTA -->
-      <div class="text-center mt-24">
+       <div class="text-center mt-24 flex flex-col sm:flex-row items-center justify-center gap-6">
+        <a href="/#work" class="group relative px-10 py-5 border border-white/30 rounded-full overflow-hidden inline-block transition-all text-white/80 hover:text-white hover:border-white font-medium text-lg">
+          <span>← Back to Work</span>
+        </a>
         <a href="/#contact" class="group relative px-10 py-5 border border-electric-yellow rounded-full overflow-hidden inline-block transition-all text-electric-yellow btn-glow font-bold text-lg">
           <span class="relative z-10 group-hover:text-brand-dark transition-colors duration-300">Discuss This Solution</span>
           <div class="absolute inset-0 bg-electric-yellow translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>

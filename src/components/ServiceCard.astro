@@ -1,8 +1,14 @@
 ---
-const { title, description } = Astro.props;
----
+const { title, description, icon } = Astro.props;
 
-<div class="bg-[#111111] border border-gray-800 rounded-3xl p-8 h-full flex flex-col service-card transition-all duration-300 hover:border-electric-yellow/50 hover:shadow-lg hover:shadow-electric-yellow/5">
-    <h4 class="text-2xl font-bold clash-display text-off-white">{title}</h4>
-    <p class="text-gray-400 mt-4 flex-grow">{description}</p>
+const icons = {
+    rocket: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3" /><path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3" /><path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>`,
+    sparkles: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2" /><path d="M8.5 13.5a2.5 2.5 0 1 1 3.544 -3.544l4.956 -4.956a2.5 2.5 0 1 1 3.543 3.543l-4.956 4.956a2.5 2.5 0 1 1 -3.543 -3.543" /><path d="M14.5 5.5a2.5 2.5 0 1 1 3.543 -3.543l-4.956 4.956a2.5 2.5 0 1 1 -3.543 3.543l4.956 -4.956" /><path d="M6 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2" /></svg>`,
+    code: `<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 8l-4 4l4 4" /><path d="M17 8l4 4l-4 4" /><path d="M14 4l-4 16" /></svg>`
+}
+---
+<div class="group h-full bg-white/5 p-8 rounded-lg border border-white/10 hover:border-brand-primary/80 transition-all duration-300 transform hover:-translate-y-1">
+    <div class="text-brand-primary mb-4" set:html={icons[icon]} />
+    <h3 class="text-xl font-semibold clash-display mb-2">{title}</h3>
+    <p class="text-white/70 text-sm leading-relaxed">{description}</p>
 </div>
